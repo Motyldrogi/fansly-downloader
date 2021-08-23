@@ -1,0 +1,18 @@
+{
+  "name": "Fansly.com Downloader",
+  "description": "Adds a download button to fansly feed and image gallery.",
+  "version": "1.0",
+  "manifest_version": 3,
+  "content_scripts": [{
+    "matches": ["https://fansly.com/*"],
+    "js": ["content.js"],
+    "css" : ["style.css"],
+    "all_frames": true
+  }],
+  "icons": {
+    "16": "/images/icon-16.png",
+    "32": "/images/icon-32.png",
+    "48": "/images/icon-48.png",
+    "128": "/images/icon-128.png"
+  }
+}
