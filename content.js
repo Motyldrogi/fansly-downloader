@@ -107,10 +107,14 @@ function onDownloadClickModal(event) {
     downloadLink = event.path[3].querySelectorAll(".contain")[1].src;
   }
 
-  var feedUsername = document
-    .querySelectorAll(".feed-item-content")[0]
-    .querySelectorAll(".display-name")[0]
-    .textContent.replace(/\s+/g, "");
+  try {
+    var feedUsername = document
+      .querySelectorAll(".feed-item-content")[0]
+      .querySelectorAll(".display-name")[0]
+      .textContent.replace(/\s+/g, "");
+  } catch (error) {
+    feedUsername = "fansly";
+  }
 
   if (downloadLink != null && !downloadLink.includes("mp4")) {
     fetch(downloadLink)
@@ -285,7 +289,7 @@ function getBlobUrls(feedItem) {
 
   var preview = feedItem.querySelector(".feed-item-preview");
 
-  if(preview.querySelectorAll(".video").length > 0) {
+  if (preview.querySelectorAll(".video").length > 0) {
     var video = true;
   }
 
