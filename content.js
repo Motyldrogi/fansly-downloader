@@ -222,7 +222,6 @@ function onDownloadClickFeed(event) {
 
   // Check if image or video
   downloadLinks.forEach((downloadLink) => {
-    console.log(downloadLink);
     if (downloadLink.startsWith("img:")) {
       fetch(downloadLink.substr(4))
         .then((res) => res.text())
