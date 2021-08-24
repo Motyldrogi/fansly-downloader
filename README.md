@@ -14,6 +14,7 @@ This is a Google Chrome extension that adds download buttons to fansly feed and 
 * No paywall is bypassed.
 * No unauthorized access or download is encouraged, facilitated or enabled.
 * Only public available data is used, fansly's (private) api is NOT used
+* 🔴 Remember that you are not allowed to reproduce, publish, or distribute any content downloaded.
 
 ### Features:
 * Download fansly.com videos.
