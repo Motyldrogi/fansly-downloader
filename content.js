@@ -27,7 +27,6 @@ var observerCallback = function (mutationsList) {
         || classList.contains("video")
       ) {
         var modalItem = node.closest(".active-modal");
-        console.log(modalItem);
         if (modalItem) {
           addDownloadButtonToModal(modalItem, node);
         }
