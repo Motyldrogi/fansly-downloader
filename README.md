@@ -2,7 +2,7 @@
 This is a Google Chrome extension that adds download buttons to fansly feed and image gallerys. It can download images, animated images (gifs) and videos.<br><br>
 
 ### Best quality download:
-* Click on an image and then at the options (gear icon) in the bottom right select "View in Original Quality". The quality option is persistent.
+* Click on an image/video and then at the options (gear icon) in the bottom right select "View in Original Quality" or best quality available. The quality option for images is persistent.
 * Now click the download button at the top left to download the file.
 
 ### Notice:

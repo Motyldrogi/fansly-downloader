@@ -11,8 +11,10 @@ var observerCallback = function (mutationsList) {
       let node = mutation.addedNodes[i];
       var classList = node.classList;
 
+      if (classList == null) return;
+
       // Feed was added
-      if (classList != null && classList.contains("image")) {
+      if (classList.contains("image")) {
         var feedItem = node.closest(".feed-item-content");
         if (feedItem) {
           addDownloadButtonToFeed(feedItem);
@@ -21,11 +23,11 @@ var observerCallback = function (mutationsList) {
 
       // Modal was added
       if (
-        classList != null &&
-        classList.contains("image") &&
-        (classList.contains("contain-no-grow") || classList.contains("contain"))
+        (classList.contains("image") && classList.contains("contain-no-grow") || classList.contains("contain"))
+        || classList.contains("video")
       ) {
         var modalItem = node.closest(".active-modal");
+        console.log(modalItem);
         if (modalItem) {
           addDownloadButtonToModal(modalItem, node);
         }
@@ -105,6 +107,9 @@ function onDownloadClickModal(event) {
     downloadLink = event.path[3].querySelector(".contain-no-grow").src;
   } catch (error) {
     downloadLink = event.path[3].querySelectorAll(".contain")[1].src;
+    if(!downloadLink) {
+      downloadLink = event.path[3].querySelectorAll(".video")[0].src;
+    }
   }
 
   var feedUsername = "fansly";
