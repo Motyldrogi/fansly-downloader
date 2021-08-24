@@ -12,7 +12,7 @@
     left: 190px !important;
     background-color: #1b1c21 !important;
     z-index: 999 !important;
-    border-radius: 12px !important;
+    border-radius: 50% !important;
 }
 
 .modal-download-button:hover {
