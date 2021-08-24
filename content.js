@@ -329,8 +329,6 @@ function downloadFile(url, name) {
 
 // Download as blob
 function downloadWithFetch(url, name) {
-  var link = document.createElement("a");
-
   fetch(url, {
     headers: new Headers({
       Origin: location.origin,
@@ -339,8 +337,11 @@ function downloadWithFetch(url, name) {
   })
     .then((response) => response.blob())
     .then((blob) => {
+      if(blob.size == 0) return;
+
       let blobUrl = window.URL.createObjectURL(blob);
 
+      var link = document.createElement("a");
       link.href = blobUrl;
 
       // Trigger download
