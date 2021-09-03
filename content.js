@@ -24,7 +24,7 @@ var observerCallback = function (mutationsList) {
       // Modal was added
       if (
         (classList.contains("image") && classList.contains("contain-no-grow") || classList.contains("contain"))
-        || classList.contains("video")
+        || classList.contains("video-element-wrapper")
       ) {
         var modalItem = node.closest(".active-modal");
         if (modalItem) {
@@ -59,6 +59,14 @@ window.addEventListener("load", function () {
 function addDownloadButtonToModal(modalItem, node) {
   var closeButton = modalItem.getElementsByClassName("modal-close-button")[0];
 
+  // Private message video
+  if (node.classList.contains("video-element-wrapper")) {
+    node = node.querySelector(".video");
+  }
+  if (node.closest(".preview")) {
+    return;
+  }
+
   // If already added or not found return
   if (node.parentNode.querySelector(".modal-download-button") != null) {
     return;
@@ -67,7 +75,7 @@ function addDownloadButtonToModal(modalItem, node) {
   if (closeButton != null) {
     var button = buildDownloadButtonModal(closeButton);
 
-    // Add new download button after close button
+    // Add new download button after node
     node.parentNode.insertBefore(button, node.nextSibling);
 
     button.addEventListener("click", onDownloadClickModal);
@@ -101,15 +109,10 @@ function buildDownloadButtonModal(closeButton) {
 
 // Click event for the added download button
 function onDownloadClickModal(event) {
-  var downloadLink = null;
-  try {
-    downloadLink = event.path[3].querySelector(".contain-no-grow").src;
-  } catch (error) {
-    downloadLink = event.path[3].querySelectorAll(".contain")[1].src;
-    if(!downloadLink) {
-      downloadLink = event.path[3].querySelectorAll(".video")[0].src;
-    }
-  }
+  // Get image or video relative to button
+  var downloadLink = event.path[3].querySelector(".contain-no-grow")?.src ||
+    event.path[3].querySelectorAll(".contain")[1]?.src ||
+    event.path[3].querySelectorAll(".video")[0]?.src;
 
   var feedUsername = "fansly";
 
@@ -240,7 +243,7 @@ function onDownloadClickFeed(event) {
   GENERAL CONTENT
 *****************/
 
-// Get the type from the first 10 chars of blob data
+// Get the type from blob string
 function getTypeFromBlobStart(blobStr) {
   var type = ".png";
 
@@ -337,7 +340,7 @@ function downloadWithFetch(url, name) {
   })
     .then((response) => response.blob())
     .then((blob) => {
-      if(blob.size == 0) return;
+      if (blob.size == 0) return;
 
       let blobUrl = window.URL.createObjectURL(blob);
 
