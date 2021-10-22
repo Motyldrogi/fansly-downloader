@@ -13,6 +13,8 @@
     background-color: #1b1c21 !important;
     z-index: 999 !important;
     border-radius: 50% !important;
+    width: 80px !important;
+    height: 80px !important;
 }
 
 .modal-download-button:hover {
