@@ -3,6 +3,10 @@
 🔴 I don't know if downloading for private use is allowed, so use it at your own responsibility. But obviously you are not allowed to reproduce, publish, or distribute any content downloaded. Please do not do this.
 
 ## Installation
+### Webstore
+* Add to chrome here [Downloader for fansly.com](https://chrome.google.com/webstore/detail/downloader-for-fanslycom/jgaacnifclemplimidkjfhllbdpmhpoo)
+
+### Manual Installation
 * <a href="https://github.com/Motyldrogi/fansly-downloader/archive/refs/heads/main.zip" target="_blank">Download the extension</a> and unzip it to a folder.
 * Then go to the extension page manually or with url **chrome://extensions/** and turn on Developer Mode in the top right corner. In the new menu select "Load unpacked" and select the folder with the unzipped files.
 
