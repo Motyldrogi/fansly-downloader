@@ -4,7 +4,7 @@
 
 ## Installation
 ### Webstore
-* Add to chrome here [Downloader for fansly.com](https://chrome.google.com/webstore/detail/downloader-for-fanslycom/jgaacnifclemplimidkjfhllbdpmhpoo)
+* Add to chrome here [Downloader for fansly.com](https://chrome.google.com/webstore/detail/downloader-for-fanslycom/jgaacnifclemplimidkjfhllbdpmhpoo) (still has to be updated)
 
 ### Manual Installation
 * <a href="https://github.com/Motyldrogi/fansly-downloader/archive/refs/heads/main.zip" target="_blank">Download the extension</a> and unzip it to a folder.
