@@ -333,6 +333,7 @@ function downloadFile(url, name) {
 // Download as blob
 function downloadWithFetch(url, name) {
   fetch(url, {
+    cache: "no-store",
     headers: new Headers({
       Origin: location.origin,
     }),
