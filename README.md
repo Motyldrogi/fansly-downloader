@@ -18,16 +18,11 @@
 * You need to be followed/subscribed to the fansly.com creator.
 * No paywall is bypassed.
 * No unauthorized access or download is encouraged, facilitated or enabled.
-* Only public available data is used, fansly's (private) api is NOT used
 
 ## Features:
 * Download fansly.com videos.
 * Download fansly.com images/photos/gifs.
-* Also works for Profilepic, banner and private messages.
-* Images are downloaded from blob url (Local Storage)
-
-## To Do:
-* Add username to filename
+* Also works for profile pic, banner and private messages.
 
 ## Disclaimer:
 "Fansly" or fansly.com is operated by Select Media LLC as stated on their "Contact" page. This Chrome extension (Downloader for fansly.com) isn't in any way affiliated with, sponsored by, or endorsed by Select Media LLC or "Fansly".
