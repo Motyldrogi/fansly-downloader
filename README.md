@@ -11,7 +11,7 @@
 * Then go to the extension page manually or with url **chrome://extensions/** and turn on Developer Mode in the top right corner. In the new menu select "Load unpacked" and select the folder with the unzipped files.
 
 ## Best quality download:
-* Click on an image/video and then at the options (gear icon) in the bottom right select "View in Original Quality" or best quality available. The quality option for images is persistent.
+* Open an image and click on the dots icon at the top right corner and select "High Quality Media". The quality option for images is persistent. Videos get always downloaded in the selected quality (gear icon).
 * Now click the download button at the top left to download the file.
 
 ## Notice:

@@ -19,9 +19,17 @@ let addDownloadButtonToModal = (modalItem, node) => {
         const button = buildDownloadButtonModal(closeButton);
         button.addEventListener("click", onDownloadClickModal);
 
+        setButtonVisibility(button);
+
         node.parentNode.insertBefore(button, node.nextSibling);
     }
 };
+
+let setButtonVisibility = (button) => {
+    // Make the button visible
+    button.style.setProperty("display", "flex", "important");
+    button.style.setProperty("opacity", "1", "important");
+}
 
 let buildDownloadButtonModal = (closeButton) => {
     // Create new div button
@@ -93,6 +101,8 @@ let addDownloadButtonToFeed = (feedItem) => {
         // Add new download button after tip button
         const button = buildDownloadButtonFeed(tipsButton);
         button.addEventListener("click", onDownloadClickFeed);
+
+        setButtonVisibility(button);
 
         tipsButton.parentNode.insertBefore(button, tipsButton.nextSibling);
     }
