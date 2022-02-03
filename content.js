@@ -186,7 +186,7 @@ let onDownloadClickFeed = (event) => {
 };
 
 let getTypeFromBlobStart = (blobStr) => {
-    const type = ".png";
+    let type = ".png";
 
     if (blobStr.includes("GIF")) {
         type = ".gif";
