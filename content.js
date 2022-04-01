@@ -257,7 +257,7 @@ let getBlobUrls = (feedItem) => {
 let downloadFile = (url, name) => {
     // Download video
     if (url.includes("mp4")) {
-        downloadWithFetch(url, name);
+        downloadVideo(url, name);
         return;
     }
 
@@ -272,18 +272,87 @@ let downloadFile = (url, name) => {
     link.parentNode.removeChild(link);
 };
 
-let downloadWithFetch = (url, name) => {
-    fetch(url, {
+let buildProgressItem = (name) => {
+    // Create progress item
+    const progressItem = document.createElement("div");
+    progressItem.classList.add("item");
+    progressItem.innerText = name;
+
+    const progressBar = document.createElement("div");
+    progressBar.classList.add("progress");
+
+    const progressBarInner = document.createElement("div");
+    progressBar.appendChild(progressBarInner);
+
+    progressItem.appendChild(progressBar);
+
+    return progressItem;
+}
+
+let updateProgressItem = ({loaded, total}, progressItem) => {
+    const percentage = Math.round(loaded/total*100)+"%";
+    progressItem.style.width = percentage;
+    progressItem.innerText = percentage;
+}
+
+let createProgressContainer = () => {
+    // Create container for progress items
+    const progressContainer = document.createElement("div");
+    progressContainer.setAttribute("id", "progress-container");
+
+    document.body.insertBefore(progressContainer, document.body.firstChild);
+}
+
+let finishedProgress = (progressItem, progressBar) => {
+    // Remove progress item
+    progressBar.innerText = "Finished download!";
+
+    progressItem.style.transition = "opacity 1s ease-in 3s";
+    
+    progressItem.style.opacity = 0;
+    setTimeout(() => {
+        progressItem.parentNode.removeChild(progressItem);
+    }, 4000);
+}
+
+let downloadVideo = async (url, name) => {
+    const response = await fetch(url, {
         cache: "no-store",
         headers: new Headers({
             Origin: location.origin,
         }),
         mode: "cors",
-    })
-    .then((response) => response.blob())
-    .then((blob) => {
-        if (blob.size == 0) return;
+    });
+    const contentLength = response.headers.get("content-length");
+    const total = parseInt(contentLength, 10);
+    let loaded = 0;
 
+    const res = new Response(new ReadableStream({
+        async start(controller) {
+            const reader = response.body.getReader();
+            
+            // Add progress bar
+            const progressItem = buildProgressItem(name);
+            const progressContainer = document.getElementById("progress-container");
+            progressContainer.insertBefore(progressItem, progressContainer.firstChild);
+
+            // Update progress
+            const progressBar = progressItem.querySelector(".progress").firstChild;
+            for (;;) {
+                const {done, value} = await reader.read();
+                if (done) break;
+                loaded += value.byteLength;
+                updateProgressItem({loaded, total}, progressBar);
+                controller.enqueue(value);
+            }
+            controller.close();
+          
+            finishedProgress(progressItem, progressBar);
+        }
+    }));
+    const blob = await res.blob();
+
+    if (blob.size != 0) {
         let blobUrl = window.URL.createObjectURL(blob);
 
         const link = document.createElement("a");
@@ -295,9 +364,13 @@ let downloadWithFetch = (url, name) => {
 
         link.click();
         link.parentNode.removeChild(link);
-    })
-    .catch((e) => console.error(e));
+    }
 };
+
+let afterPageLoad = () => {
+    // Init after page load
+    createProgressContainer();
+}
 
 let observerCallback = (mutationsList) => {
     mutationsList.forEach((mutation) => {
@@ -341,4 +414,5 @@ const observer = new MutationObserver(observerCallback);
 
 window.addEventListener("load", function () {
     observer.observe(document.body, config);
+    afterPageLoad();
 });

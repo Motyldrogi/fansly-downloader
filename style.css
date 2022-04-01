@@ -27,6 +27,45 @@
     }
 }
 
+#progress-container {
+    max-height: 200px;
+    overflow: hidden auto;
+    z-index: 999 !important;
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+    min-width: 300px;
+}
+
+#progress-container .item {
+    background: #222;
+    border: 1px solid var(--blue-2);
+    border-radius: 6px;
+    height: 50px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 5px 10px 5px 5px;
+    margin-bottom: 3px;
+}
+
+#progress-container .progress {
+    background: #333;
+    border-radius: 9px;
+    height: 20px;
+    width: 100%;
+    padding: 3px;
+}
+
+#progress-container .progress > div {
+    background: var(--blue-2);
+    color: #fff;
+    height: 100%;
+    border-radius: 6px;
+    text-align: center;
+}
+
 .modal-pulse {
     box-shadow: 0 0 0 rgba(244,154,255, 0.4);
     animation: pulse 2s infinite;
