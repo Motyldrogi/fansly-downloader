@@ -59,9 +59,9 @@ let buildDownloadButtonModal = (closeButton) => {
 
 let onDownloadClickModal = (event) => {
     // Get image or video relative to button
-    const downloadLink = event.path[3].querySelector(".contain-no-grow")?.src ||
-        event.path[3].querySelectorAll(".contain")[1]?.src ||
-        event.path[3].querySelectorAll(".video")[0]?.src;
+    const downloadLink = event.path[2].querySelector(".video")?.src ||
+        event.path[2].querySelectorAll(".image")[1]?.src ||
+        event.path[2].querySelectorAll(".image")[0]?.src;
 
     const feedUsername = "fansly";
 
@@ -382,18 +382,13 @@ let observerCallback = (mutationsList) => {
 
             if (classList == null) return;
 
-            // Feed was added
+            // Image was added
             if (classList.contains("image")) {
                 const feedItem = node.closest(".feed-item-content");
                 if (feedItem) {
                     addDownloadButtonToFeed(feedItem);
                 }
-            }
 
-            // Modal was added
-            if ((classList.contains("image") && classList.contains("contain-no-grow")) ||
-                classList.contains("contain") || classList.contains("video-element-wrapper")
-            ) {
                 const modalItem = node.closest(".active-modal");
                 if (modalItem) {
                     addDownloadButtonToModal(modalItem, node);
