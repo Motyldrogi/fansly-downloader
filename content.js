@@ -160,7 +160,13 @@ let onDownloadClickFeed = (event) => {
     // Stop angular click events
     event.stopPropagation();
 
-    const feedItemContent = event.path[2].closest(".feed-item-content");
+    const path = event.path || (event.composedPath && event.composedPath());
+    if(!path) {
+      console.log("Unable to get path information from browser.");
+      return;
+    }
+
+    const feedItemContent = path[2].closest(".feed-item-content");
 
     const preview = feedItemContent.querySelectorAll(".feed-item-preview")[0];
     if (!preview.classList.contains("single-preview")) {
