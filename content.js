@@ -59,9 +59,16 @@ let buildDownloadButtonModal = (closeButton) => {
 
 let onDownloadClickModal = (event) => {
     // Get image or video relative to button
-    const downloadLink = event.path[2].querySelector(".video")?.src ||
-        event.path[2].querySelectorAll(".image")[1]?.src ||
-        event.path[2].querySelectorAll(".image")[0]?.src;
+    
+    const path = event.path || (event.composedPath && event.composedPath());
+    if(!path) {
+      console.log("Unable to get path information from browser.");
+      return;
+    }
+    
+    const downloadLink = path[2].querySelector(".video")?.src ||
+        path[2].querySelectorAll(".image")[1]?.src ||
+        path[2].querySelectorAll(".image")[0]?.src;
 
     const feedUsername = "fansly";
 
