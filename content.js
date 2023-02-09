@@ -207,6 +207,8 @@ let getTypeFromBlobStart = (blobStr) => {
         type = ".jpg";
     } else if (blobStr.includes("JPEG")) {
         type = ".jpeg";
+    } else if (blobStr.includes("ftyp")) {
+        type = ".mp4";
     }
 
     return type;

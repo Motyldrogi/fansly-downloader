@@ -1,7 +1,7 @@
 {
   "name": "Fansly.com Downloader",
   "description": "Adds a download button to fansly feed and image gallery.",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "manifest_version": 3,
   "content_scripts": [{
     "matches": ["https://fansly.com/*"],
