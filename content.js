@@ -57,14 +57,19 @@ let buildDownloadButtonModal = (closeButton) => {
     return button;
 };
 
-let onDownloadClickModal = (event) => {
-    // Get image or video relative to button
-    
+let getPathInfo = (event) => {
     const path = event.path || (event.composedPath && event.composedPath());
     if(!path) {
       console.log("Unable to get path information from browser.");
       return;
     }
+    return path;
+}
+
+let onDownloadClickModal = (event) => {
+    // Get image or video relative to button
+    
+    const path = getPathInfo(event);
     
     const downloadLink = path[2].querySelector(".video")?.src ||
         path[2].querySelectorAll(".image")[1]?.src ||
@@ -160,11 +165,7 @@ let onDownloadClickFeed = (event) => {
     // Stop angular click events
     event.stopPropagation();
 
-    const path = event.path || (event.composedPath && event.composedPath());
-    if(!path) {
-      console.log("Unable to get path information from browser.");
-      return;
-    }
+    const path = getPathInfo(event);
 
     const feedItemContent = path[2].closest(".feed-item-content");
 
@@ -382,9 +383,42 @@ let downloadVideo = async (url, name) => {
     }
 };
 
+let checkVersionUpdate = () => {
+    var currentVer = chrome.runtime.getManifest().version;
+    
+    fetch("https://api.github.com/repos/Motyldrogi/fansly-downloader/releases/latest")
+    .then((res) => res.json())
+    .then((data) => {
+        if(currentVer != data.tag_name) {
+            createUpdateContainer(currentVer, data.tag_name);
+        }
+    });
+}
+
+let createUpdateContainer = (currentVer, latestVer) => {
+    const container = document.createElement("div");
+    container.setAttribute("id", "update-container");
+    container.innerHTML = `<a href="https://github.com/Motyldrogi/fansly-downloader/releases" target="_blank">
+    Click here to update Fansly Downloader!</a>Your version: <b>${currentVer}</b> - Latest Version: <b>${latestVer}</b>`;
+    document.body.insertBefore(container, document.body.firstChild);
+
+    const dismiss = document.createElement("div");
+    dismiss.setAttribute("class", "dismiss");
+    dismiss.innerText = "X";
+    dismiss.addEventListener("click", dismissUpdateContainer);
+    container.appendChild(dismiss);
+}
+
+let dismissUpdateContainer = (event) => {
+    const path = getPathInfo(event);
+    const container = path[1];
+    container.parentNode.removeChild(container);
+}
+
 let afterPageLoad = () => {
     // Init after page load
     createProgressContainer();
+    checkVersionUpdate();
 }
 
 let observerCallback = (mutationsList) => {

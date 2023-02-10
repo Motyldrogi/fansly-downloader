@@ -67,6 +67,37 @@
     text-align: center;
 }
 
+#update-container {
+    position: fixed;
+    top: 85px;
+    background: #1b1c21;
+    right: 20px;
+    border-radius: 12px;
+    padding: 15px;
+    z-index: 3 !important;
+    overflow: hidden auto;
+    min-width: 320px;
+    box-shadow: var(--box-shadow-1);
+}
+
+#update-container a {
+    color: #2699f6;
+    text-decoration: none;
+    margin-bottom: 5px;
+    display: block;
+}
+
+#update-container .dismiss {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-size: 16px;
+    cursor: pointer;
+    color: #fff;
+    font-weight: 300;
+    font-family: Arial, sans-serif;
+}
+
 .modal-pulse {
     box-shadow: 0 0 0 rgba(244,154,255, 0.4);
     animation: pulse 2s infinite;
