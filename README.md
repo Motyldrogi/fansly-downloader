@@ -3,12 +3,13 @@
 🔴 I don't know if downloading for private use is allowed, so use it at your own responsibility. But obviously you are not allowed to reproduce, publish, or distribute any content downloaded. Please do not do this.
 
 ## Installation
-### Webstore
-* 🔴 EXTENSION GOT REMOVED FROM WEBSTORE "This functionality is not allowed per Chrome Web Store policies." 🔴
 
 ### Manual Installation
-* <a href="https://github.com/Motyldrogi/fansly-downloader/archive/refs/heads/main.zip" target="_blank">Download the extension</a> and unzip it to a folder.
+* <a href="https://github.com/Motyldrogi/fansly-downloader/releases/latest" target="_blank">Download the extension</a> and unzip it to a folder.
 * Then go to the extension page manually or with url **chrome://extensions/** and turn on Developer Mode in the top right corner. In the new menu select "Load unpacked" and select the folder with the unzipped files.
+
+### Webstore
+* 🔴 EXTENSION GOT REMOVED FROM WEBSTORE "This functionality is not allowed per Chrome Web Store policies." 🔴
 
 ## Best quality download:
 * Open an image and click on the dots icon at the top right corner and select "High Quality Media". The quality option for images is persistent. Videos get always downloaded in the selected quality (gear icon).
@@ -21,7 +22,7 @@
 
 ## Features:
 * Download fansly.com videos.
-* Download fansly.com images/photos/gifs.
+* Download fansly.com images/photos/gifs/audio.
 * Also works for profile pic, banner and private messages.
 
 ## Disclaimer:
