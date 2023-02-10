@@ -1,5 +1,5 @@
 # Downloader for fansly.com
-🟢 This is a Google Chrome extension that adds download buttons to fansly feed and image gallerys. It can download images, animated images (gifs) and videos.<br><br>
+🟢 This is a Google Chrome extension that adds download buttons to fansly feed and image gallerys. It can download images, animated images (gifs), audio and videos.<br><br>
 🔴 I don't know if downloading for private use is allowed, so use it at your own responsibility. But obviously you are not allowed to reproduce, publish, or distribute any content downloaded. Please do not do this.
 
 ## Installation
