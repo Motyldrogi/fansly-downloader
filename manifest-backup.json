@@ -2,13 +2,8 @@
   "name": "Fansly.com Downloader",
   "description": "Adds a download button to fansly feed and image gallery.",
   "version": "2.0.6",
-  "manifest_version": 3,
-  "web_accessible_resources": [
-    {
-      "resources": ["content.js", "ffmpeg/ffmpeg.min.js", "ffmpeg/ffmpeg-core.js"],
-      "matches": ["https://fansly.com/*"]
-    }
-  ],
+  "manifest_version": 2,
+  "web_accessible_resources": ["content.js", "ffmpeg/ffmpeg.min.js", "ffmpeg/ffmpeg-core.js"],
   "content_scripts": [
     {
       "matches": ["https://fansly.com/*"],
@@ -23,9 +18,7 @@
     "48": "/images/icon-48.png",
     "128": "/images/icon-128.png"
   },
-  "content_security_policy": {
-    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; wasm-src 'self'; object-src 'self'"
-  },
+  "content_security_policy": "script-src 'self' 'unsafe-eval' 'wasm-unsafe-eval'; wasm-src 'self'; object-src 'self'",
   "cross_origin_embedder_policy": {
     "value": "require-corp"
   },
