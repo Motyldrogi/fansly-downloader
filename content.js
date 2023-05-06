@@ -62,14 +62,37 @@ const getPathInfo = (event) => {
   return path;
 };
 
-const onDownloadClickModal = (event) => {
+const onDownloadClickModal = async (event) => {
   // Get image or video relative to button
-
   const path = getPathInfo(event);
 
-  const downloadLink = path[2].querySelector("video")?.src || path[2].querySelectorAll(".image")[1]?.src || path[2].querySelectorAll(".image")[0]?.src;
+  const downloadLink =
+    path[2].querySelector("video")?.src ||
+    path[2].querySelectorAll(".image")[1]?.src ||
+    path[2].querySelectorAll(".image")[0]?.src;
 
   const feedUsername = "fansly";
+
+  try {
+    await fetch(_downloadLink, {
+      credentials: "include",
+    });
+  } catch {
+    const [videoUrl, audioUrl] = await getVideoUrl(path);
+
+    console.log(videoUrl);
+    console.log(audioUrl);
+
+    // TODO do something with this
+
+    //   const video = document.createElement('a');
+    //   video.href = URL.createObjectURL(new Blob([data], { type: 'video/mp4' }));
+    //   video.download = feedUsername + "-" + downloadLink.split("/")[4].split("?")[0];
+    //   video.click();
+    //   video.remove();
+
+    return;
+  }
 
   if (downloadLink != null && !downloadLink.includes("mp4")) {
     fetch(downloadLink)
@@ -77,7 +100,7 @@ const onDownloadClickModal = (event) => {
       .then((data) => {
         const type = getTypeFromBlobStart(data.slice(0, 10));
 
-        const name = feedUsername + "-" + Math.random().toString(36).substr(2) + type;
+        const name = feedUsername + "-" + downloadLink.split("/")[3].split("?")[0].split("-").join("") + type;
 
         downloadFile(downloadLink, name);
       });
@@ -148,11 +171,13 @@ const buildDownloadButtonFeed = (tipsButton) => {
   return button;
 };
 
-const onDownloadClickFeed = (event) => {
+const onDownloadClickFeed = async (event) => {
   // Stop angular click events
   event.stopPropagation();
 
   const path = getPathInfo(event);
+
+  console.log(path);
 
   const feedItemContent = path[2].closest(".feed-item-content");
 
@@ -167,19 +192,35 @@ const onDownloadClickFeed = (event) => {
   const feedUsername = feedItemContent.querySelector(".display-name").textContent.replace(/\s+/g, "");
 
   // Check if image or video
-  downloadLinks.forEach((downloadLink) => {
+  downloadLinks.forEach(async (downloadLink) => {
+    // check if the URl works or not. since Fansly has 2 ways of showing images and 1 of the 2 is f#cking autistic
+    const _downloadLink = downloadLink.substr(4);
+
+    try {
+      await fetch(_downloadLink, {
+        credentials: "include",
+      });
+    } catch {
+      const [videoUrl, audioUrl] = await getVideoUrl(path);
+
+      console.log(videoUrl);
+      console.log(audioUrl);
+
+      return;
+    }
+
     if (downloadLink.startsWith("img:")) {
       fetch(downloadLink.substr(4))
         .then((res) => res.text())
         .then((data) => {
           const type = getTypeFromBlobStart(data.slice(0, 10));
 
-          const name = feedUsername + "-" + Math.random().toString(36).substr(2) + type;
+          const name = feedUsername + "-" + downloadLink.split("/")[3].split("?")[0].split("-").join("") + type;
 
           downloadFile(downloadLink.substr(4), name);
         });
     } else {
-      const name = feedUsername + "-" + downloadLink.split("/")[4].split("?")[0];
+      const name = feedUsername + "-" + downloadLink.split("/")[3] + ".mp4";
 
       downloadFile(downloadLink.substr(4), name);
     }
@@ -246,7 +287,6 @@ const getBlobUrls = (feedItem) => {
       if (img.src != null && !video) {
         returnable.push("img:" + img.src);
       } else {
-        console.log(preview);
         const vid = preview.querySelector("video");
         if (vid) {
           returnable.push("vid:" + vid.src);
@@ -323,9 +363,9 @@ const downloadVideo = async (url, name) => {
   const response = await fetch(url, {
     cache: "no-store",
     headers: new Headers({
-      Origin: location.origin
+      Origin: location.origin,
     }),
-    mode: "cors"
+    mode: "cors",
   });
   const contentLength = response.headers.get("content-length");
   const total = parseInt(contentLength, 10);
@@ -353,8 +393,8 @@ const downloadVideo = async (url, name) => {
         controller.close();
 
         finishedProgress(progressItem, progressBar);
-      }
-    })
+      },
+    }),
   );
   const blob = await res.blob();
 
@@ -437,11 +477,58 @@ const observerCallback = (mutationsList) => {
   });
 };
 
+function getMPD() {
+  var capture_network_request = [];
+  var capture_resource = performance.getEntriesByType("resource");
+  for (var i = 0; i < capture_resource.length; i++) {
+    if (
+      capture_resource[i].initiatorType == "xmlhttprequest" ||
+      capture_resource[i].initiatorType == "script" ||
+      capture_resource[i].initiatorType == "img"
+    ) {
+      if (capture_resource[i].name.indexOf(".mpd") > -1) {
+        capture_network_request.push(capture_resource[i].name);
+      }
+    }
+  }
+  return capture_network_request;
+}
+
+const getVideoUrl = async (path) => {
+  function delay(time) {
+    return new Promise((resolve) => setTimeout(resolve, time));
+  }
+
+  const playButton = path[2].querySelector("div.play-button");
+  playButton.click();
+
+  // wait 3 seconds to compensate for any delays
+  await delay(3000);
+
+  const mpd = getMPD().at(-1);
+  const baseURL = mpd?.split("/").slice(0, -1).join("/") + "/";
+
+  let xmlDoc;
+  await fetch(mpd, {
+    credentials: "include",
+  })
+    .then((response) => response.text())
+    .then((str) => new DOMParser().parseFromString(str, "text/xml"))
+    .then((data) => (xmlDoc = data));
+
+  const videoUrl =
+    baseURL + xmlDoc?.querySelectorAll("AdaptationSet:nth-child(1) Representation > BaseURL")[0]?.textContent;
+  const audioUrl =
+    baseURL + xmlDoc?.querySelectorAll("AdaptationSet:nth-child(2) Representation > BaseURL")[0]?.textContent;
+
+  return [videoUrl, audioUrl];
+};
+
 const config = {
   attributes: true,
   childList: true,
   subtree: true,
-  characterData: true
+  characterData: true,
 };
 
 const observer = new MutationObserver(observerCallback);
