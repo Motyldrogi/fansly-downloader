@@ -74,9 +74,7 @@ const onDownloadClickModal = async (event) => {
   const feedUsername = "fansly";
 
   try {
-    await fetch(_downloadLink, {
-      credentials: "include",
-    });
+    await fetch(downloadLink, { credentials: "include" });
   } catch {
     const [videoUrl, audioUrl] = await getVideoUrl(path);
 
@@ -84,13 +82,6 @@ const onDownloadClickModal = async (event) => {
     console.log(audioUrl);
 
     // TODO do something with this
-
-    //   const video = document.createElement('a');
-    //   video.href = URL.createObjectURL(new Blob([data], { type: 'video/mp4' }));
-    //   video.download = feedUsername + "-" + downloadLink.split("/")[4].split("?")[0];
-    //   video.click();
-    //   video.remove();
-
     return;
   }
 
