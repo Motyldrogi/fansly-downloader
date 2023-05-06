@@ -82,6 +82,22 @@ const onDownloadClickModal = async (event) => {
     console.log(audioUrl);
 
     // TODO do something with this
+
+    let { createFFmpeg, fetchFile } = FFmpeg;
+    let ffmpeg = createFFmpeg();
+    await ffmpeg.load();
+    ffmpeg.FS("writeFile", "video.mp4", await fetchFile(videoUrl));
+    ffmpeg.FS("writeFile", "audio.mp4", await fetchFile(audioUrl));
+    await ffmpeg.run("-i", "video.mp4", "-i", "audio.mp4", "-c", "copy", "output.mp4");
+    let _data = await ffmpeg.FS("readFile", "output.mp4");
+    let data = new Uint8Array(_data.buffer);
+
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([data], { type: "video/mp4" }));
+    a.download = feedUsername + "-" + downloadLink.split("/")[4].split("?")[0];
+    a.click();
+    a.remove();
+
     return;
   }
 
@@ -521,6 +537,7 @@ const config = {
 const observer = new MutationObserver(observerCallback);
 
 window.addEventListener("load", function () {
+  if (!crossOriginIsolated) SharedArrayBuffer = ArrayBuffer;
   observer.observe(document.body, config);
   afterPageLoad();
 });
