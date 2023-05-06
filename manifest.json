@@ -5,7 +5,12 @@
   "manifest_version": 3,
   "web_accessible_resources": [
     {
-      "resources": ["content.js", "ffmpeg/ffmpeg.min.js", "ffmpeg/ffmpeg-core.js"],
+      "resources": [
+        "ffmpeg/ffmpeg.min.js",
+        "ffmpeg/ffmpeg-core.js",
+        "ffmpeg/ffmpeg-core.wasm",
+        "ffmpeg/ffmpeg-core.worker.js"
+      ],
       "matches": ["https://fansly.com/*"]
     }
   ],
