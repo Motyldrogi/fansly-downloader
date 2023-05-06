@@ -413,6 +413,49 @@ const downloadVideo = async (url, name) => {
   }
 };
 
+const getMPD = () => {
+  var capture_network_request = [];
+  var capture_resource = performance.getEntriesByType("resource");
+  for (var i = 0; i < capture_resource.length; i++) {
+    if (capture_resource[i].initiatorType == "xmlhttprequest") {
+      if (capture_resource[i].name.indexOf(".mpd") > -1) {
+        capture_network_request.push(capture_resource[i].name);
+      }
+    }
+  }
+  return capture_network_request;
+};
+
+const getVideoUrl = async (path) => {
+  function delay(time) {
+    return new Promise((resolve) => setTimeout(resolve, time));
+  }
+
+  const playButton = path[2].querySelector("div.play-button");
+  playButton.click();
+
+  // wait 1.5 seconds to compensate for any delays
+  await delay(1500);
+
+  // yes i am quite aware that this code is terrible and will 100% go wrong if someone uses it
+  // too bad, there is no other way to do this
+  const mpd = getMPD().at(-1);
+  const baseURL = mpd?.split("/").slice(0, -1).join("/") + "/";
+
+  let xmlDoc;
+  await fetch(mpd, { credentials: "include" })
+    .then((response) => response.text())
+    .then((str) => new DOMParser().parseFromString(str, "text/xml"))
+    .then((data) => (xmlDoc = data));
+
+  const videoUrl =
+    baseURL + xmlDoc?.querySelectorAll("AdaptationSet:nth-child(1) Representation > BaseURL")[0]?.textContent;
+  const audioUrl =
+    baseURL + xmlDoc?.querySelectorAll("AdaptationSet:nth-child(2) Representation > BaseURL")[0]?.textContent;
+
+  return [videoUrl, audioUrl];
+};
+
 const checkVersionUpdate = () => {
   var currentVer = chrome.runtime.getManifest().version;
 
@@ -475,49 +518,6 @@ const observerCallback = (mutationsList) => {
       }
     }
   });
-};
-
-function getMPD() {
-  var capture_network_request = [];
-  var capture_resource = performance.getEntriesByType("resource");
-  for (var i = 0; i < capture_resource.length; i++) {
-    if (capture_resource[i].initiatorType == "xmlhttprequest") {
-      if (capture_resource[i].name.indexOf(".mpd") > -1) {
-        capture_network_request.push(capture_resource[i].name);
-      }
-    }
-  }
-  return capture_network_request;
-}
-
-const getVideoUrl = async (path) => {
-  function delay(time) {
-    return new Promise((resolve) => setTimeout(resolve, time));
-  }
-
-  const playButton = path[2].querySelector("div.play-button");
-  playButton.click();
-
-  // wait 1.5 seconds to compensate for any delays
-  await delay(1500);
-
-  const mpd = getMPD().at(-1);
-  const baseURL = mpd?.split("/").slice(0, -1).join("/") + "/";
-
-  let xmlDoc;
-  await fetch(mpd, {
-    credentials: "include",
-  })
-    .then((response) => response.text())
-    .then((str) => new DOMParser().parseFromString(str, "text/xml"))
-    .then((data) => (xmlDoc = data));
-
-  const videoUrl =
-    baseURL + xmlDoc?.querySelectorAll("AdaptationSet:nth-child(1) Representation > BaseURL")[0]?.textContent;
-  const audioUrl =
-    baseURL + xmlDoc?.querySelectorAll("AdaptationSet:nth-child(2) Representation > BaseURL")[0]?.textContent;
-
-  return [videoUrl, audioUrl];
 };
 
 const config = {
