@@ -481,11 +481,7 @@ function getMPD() {
   var capture_network_request = [];
   var capture_resource = performance.getEntriesByType("resource");
   for (var i = 0; i < capture_resource.length; i++) {
-    if (
-      capture_resource[i].initiatorType == "xmlhttprequest" ||
-      capture_resource[i].initiatorType == "script" ||
-      capture_resource[i].initiatorType == "img"
-    ) {
+    if (capture_resource[i].initiatorType == "xmlhttprequest") {
       if (capture_resource[i].name.indexOf(".mpd") > -1) {
         capture_network_request.push(capture_resource[i].name);
       }
@@ -502,8 +498,8 @@ const getVideoUrl = async (path) => {
   const playButton = path[2].querySelector("div.play-button");
   playButton.click();
 
-  // wait 3 seconds to compensate for any delays
-  await delay(3000);
+  // wait 1.5 seconds to compensate for any delays
+  await delay(1500);
 
   const mpd = getMPD().at(-1);
   const baseURL = mpd?.split("/").slice(0, -1).join("/") + "/";
