@@ -1,6 +1,6 @@
 # ⚠ WARNING ⚠
 
-Due to new limitations within Fansly the Video and Audio will be downloaded separately!!
+Due to new limitations within Fansly the Video and Audio will be downloaded separately!!<br/>
 And it has a small chance to download the wrong video, if this happens please refresh the website.
 
 # ISSUES:
