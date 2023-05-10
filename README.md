@@ -1,7 +1,7 @@
 # ⚠ WARNING ⚠
 
 Due to new limitations within Fansly the Video and Audio will be downloaded separately!!<br/>
-You can use [Microsoft Clipchamp](https://clipchamp.com/en/)'s [Online editor](https://clipchamp.com/en/video-editor/) or download [Clipchamp for Windows](https://clipchamp.com/en/windows-video-editor/)
+You can use [Microsoft Clipchamp](https://clipchamp.com/en/)'s [Online editor](https://clipchamp.com/en/video-editor/) or download [Clipchamp for Windows](https://clipchamp.com/en/windows-video-editor/)<br/>
 And it has a small chance to download the wrong video, if this happens please refresh the website.
 
 # ISSUES:
