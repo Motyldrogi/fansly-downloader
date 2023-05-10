@@ -1,10 +1,13 @@
+# ⚠ WARNING ⚠
+
+Due to new limitations within Fansly the Video and Audio will be downloaded separately!!
+And it has a small chance to download the wrong video, if this happens please refresh the website.
+
 # ISSUES:
 
-- SharedArrayBuffer is not defined
-- - at line `552` is my sad attempt at fixing it
 - downloader gets the wrong files easily
-- - from line `435` - `476`
-- - at `461` exactly is the issue
+- - from line `461` - `502`
+- - at `487` exactly is the issue
 - - it just grabs the last files from the array which goes wrong very fast
 
 # Downloader for fansly.com

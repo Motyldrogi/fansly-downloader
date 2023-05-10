@@ -78,37 +78,10 @@ const onDownloadClickModal = async (event) => {
   } catch {
     const [videoUrl, audioUrl] = await getVideoUrl(path);
 
-    console.log(videoUrl);
-    console.log(audioUrl);
+    console.info("Downloading video URL: " + videoUrl);
+    console.info("Downloading audio URL: " + audioUrl);
 
-    let { createFFmpeg, fetchFile } = FFmpeg;
-    let ffmpeg = createFFmpeg({
-      log: true,
-      corePath: chrome.runtime.getURL("ffmpeg/ffmpeg-core.js"),
-    });
-
-    if (!ffmpeg.isLoaded()) {
-      await ffmpeg.load();
-    }
-
-    // write files to memory
-    ffmpeg.FS("writeFile", "video.mp4", await fetchFile(videoUrl));
-    ffmpeg.FS("writeFile", "audio.mp4", await fetchFile(audioUrl));
-
-    // Run ffmpeg command to merge video and audio
-    await ffmpeg.run("-i", "video.mp4", "-i", "audio.mp4", "-c", "copy", "output.mp4");
-
-    // read the result
-    let data = await ffmpeg.FS("readFile", "output.mp4");
-
-    // create a URL
-    let resultUrl = URL.createObjectURL(new Blob([data.buffer], { type: "video/mp4" }));
-
-    const a = document.createElement("a");
-    a.href = resultUrl;
-    a.download = feedUsername + "-" + downloadLink.split("/")[4].split("?")[0];
-    a.click();
-    a.remove();
+    newDownloadVideo(videoUrl, audioUrl);
 
     return;
   }
@@ -222,8 +195,10 @@ const onDownloadClickFeed = async (event) => {
     } catch {
       const [videoUrl, audioUrl] = await getVideoUrl(path);
 
-      console.log(videoUrl);
-      console.log(audioUrl);
+      console.info("Downloading video URL: " + videoUrl);
+      console.info("Downloading audio URL: " + audioUrl);
+
+      newDownloadVideo(videoUrl, audioUrl);
 
       return;
     }
@@ -432,6 +407,57 @@ const downloadVideo = async (url, name) => {
   }
 };
 
+const newDownloadVideo = async (videoUrl, audioUrl) => {
+  const dlBool = confirm(
+    "Due to Limitations the video and audio will be downloaded separately\ndo you wish to continue?\nyou can merge the video and audio online",
+  );
+  if (!dlBool) return;
+
+  const videoName = videoUrl.split("/")[6].split("_")[0] + ".mp4";
+  const audioName = audioUrl.split("/")[6].split("_")[0].split(".")[0] + ".mp3";
+
+  await fetch(videoUrl, { credentials: "include" })
+    .then((response) => response.blob())
+    .then((blob) => {
+      // create a download link
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = videoName;
+      // trigger the download
+      document.body.appendChild(a);
+      a.click();
+      // cleanup
+      document.body.removeChild(a);
+      a.remove();
+      URL.revokeObjectURL(url);
+    })
+    .catch((error) => console.error(error));
+
+  await fetch(audioUrl, { credentials: "include" })
+    .then((response) => response.blob())
+    .then((blob) => {
+      // create a download link
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = audioName;
+      // trigger the download
+      document.body.appendChild(a);
+      a.click();
+      // cleanup
+      document.body.removeChild(a);
+      a.remove();
+      URL.revokeObjectURL(url);
+    })
+    .catch((error) => console.error(error));
+
+  const openMerge = confirm(
+    "You can use Microsoft Clipchamp Online & on your PC to merge video and audio\nwould you like to open Clipchamp Online in a new tab?",
+  );
+  if (openMerge) window.open("https://clipchamp.com/en/video-editor/", "_blank");
+};
+
 const getMPD = () => {
   var capture_network_request = [];
   var capture_resource = performance.getEntriesByType("resource");
@@ -549,8 +575,6 @@ const config = {
 const observer = new MutationObserver(observerCallback);
 
 window.addEventListener("load", function () {
-  if (!crossOriginIsolated) SharedArrayBuffer = new SharedArrayBuffer(); // FIXME SharedArrayBuffer is not defined
-  // i want to fucking end myself
   observer.observe(document.body, config);
   afterPageLoad();
 });
