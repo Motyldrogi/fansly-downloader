@@ -8,8 +8,8 @@
 # ISSUES:
 
 - downloader gets the wrong files easily
-- - from line `461` - `502`
-- - at `487` exactly is the issue
+- - from line `467` - `508`
+- - at `493` exactly is the issue
 - - it just grabs the last files from the array which goes wrong very fast
 
 # Downloader for fansly.com
