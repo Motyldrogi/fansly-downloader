@@ -1,8 +1,9 @@
 # ⚠ WARNING ⚠
 
-Due to new limitations within Fansly the Video and Audio will be downloaded separately!!<br/>
-You can use [Microsoft Clipchamp](https://clipchamp.com/en/)'s [Online editor](https://clipchamp.com/en/video-editor/) or download [Clipchamp for Windows](https://clipchamp.com/en/windows-video-editor/)<br/>
-And it has a small chance to download the wrong video, if this happens please refresh the website.
+- Due to new limitations within Fansly the Video and Audio will be downloaded separately!<br/>
+- - You can use [Microsoft Clipchamp](https://clipchamp.com/en/)'s [Online editor](https://clipchamp.com/en/video-editor/) or download [Clipchamp for Windows](https://clipchamp.com/en/windows-video-editor/), Or your own editor of choice<br/>
+- Video's behind a paywall will also not download anymore (yes, even if you can see a preview of it)<br/>
+- It has a decently sized chance to download the wrong video, if this happens please refresh the website.
 
 # ISSUES:
 
