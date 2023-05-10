@@ -68,7 +68,7 @@ const onDownloadClickModal = async (event) => {
 
   // check if video is locked, this is because locked video files are .m3u8
   const isLocked = path[2].querySelector(".locked-text-container-wrapper") === null;
-  if (isLocked) return alert("Locked videos are not available for download");
+  if (!isLocked) return alert("Locked videos are not available for download");
 
   const downloadLink =
     path[2].querySelector("video")?.src ||
@@ -175,7 +175,7 @@ const onDownloadClickFeed = async (event) => {
 
   // check if video is locked, this is because locked video files are .m3u8
   const isLocked = path[2].querySelector(".locked-text-container-wrapper") === null;
-  if (isLocked) return alert("Locked videos are not available for download");
+  if (!isLocked) return alert("Locked videos are not available for download");
 
   const feedItemContent = path[2].closest(".feed-item-content");
 
